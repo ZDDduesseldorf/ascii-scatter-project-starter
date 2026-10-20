@@ -1,16 +1,16 @@
 # Praktikum: Vom CSV-Datensatz zum sauberen Python-Projekt
 
 ## ASCII Scatter Plot im Terminal
- 
-**Teamgröße:** 2 Personen  
-**Schwerpunkt:** Environment, Dependencies, Projektstruktur, Imports, Git/GitHub-Zusammenarbeit  
 
-> In diesem Praktikum geht es **nicht primär darum, einen schwierigen Plot-Algorithmus zu erfinden**.  
-> Die eigentliche Aufgabe ist, aus einer kleinen Programmieridee ein **sauber strukturiertes, reproduzierbares Python-Projekt** zu machen.
+**Teamgröße:** 2 Personen  
+**Werkzeuge:** VS Code, Git/GitHub, `uv`, Python, `rich`  
+**Schwerpunkt:** Environment, Dependencies, `pyproject.toml`, `.gitignore`, `src`-Layout, Packages/Module, relative Imports und Team-Workflow
+
+> **Wichtig:** In diesem Praktikum geht es **nicht primär darum, einen schwierigen Plot-Algorithmus zu erfinden**. Die eigentliche Aufgabe ist, aus einer kleinen Programmieridee ein **sauber strukturiertes, reproduzierbares Python-Projekt** zu machen.
 
 ---
 
-# 1. Szenario
+# Szenario
 
 Ihr bekommt einen kleinen CSV-Datensatz mit drei Spalten:
 
@@ -57,44 +57,46 @@ Die Punkte sollen mit [`rich`](https://rich.readthedocs.io/) farbig dargestellt 
 
 ---
 
-# 2. Was hier bewertet / automatisch geprüft wird
+# Was heute gelernt werden soll
 
-Am Ende soll euer Repository insbesondere zeigen:
+Am Ende sollt ihr erklären können:
 
-- ein eigenes `uv`-Projekt,
-- eine lokale `.venv`,
-- eine sinnvolle `.gitignore`,
-- ein `pyproject.toml`,
-- ein committed `uv.lock`,
-- `rich` als deklarierte Abhängigkeit,
-- eine `src/`-Projektstruktur,
-- ein richtiges Python-Package mit `__init__.py`,
-- mehrere Module mit Imports untereinander,
-- ein ausführbares Gesamtprogramm,
-- Git-Commits **von beiden Teammitgliedern**,
-- Arbeit über Branches, Push/Pull und Pull Requests.
+- warum jedes Projekt ein eigenes Environment haben sollte,
+- was `.venv` enthält und warum es **nicht** ins Repository gehört,
+- welche Rolle `pyproject.toml` spielt,
+- warum `uv.lock` committed wird,
+- warum wir unseren Python-Code unter `src/` organisieren,
+- was ein Python-Package ist,
+- wozu `__init__.py` dient,
+- wie Module innerhalb eines Packages voneinander importieren,
+- warum wir das Programm mit `python -m ...` ausführen,
+- wie zwei Personen über Branches, Commits, Push/Pull und Pull Requests zusammenarbeiten,
+- wie VS Code euch beim Git-Workflow unterstützt, ohne dass Git dadurch „verschwindet“.
 
-Die bereitgestellte GitHub Action gibt euch automatisch Feedback zu einem großen Teil dieser Punkte.
+Die bereitgestellte GitHub Action prüft automatisch einen großen Teil dieser Punkte.
 
 > Die CI ist heute nur euer **automatischer Projekt-Checker**. Wie GitHub Actions intern funktioniert, behandeln wir erst später.
 
 ---
 
-# 3. Starter-Repository
+# Starter-Repository
 
 Ihr startet von einem bereitgestellten Repository.
 
 Es enthält bereits:
 
 ```text
-ascii-scatter-starter/
+ascii-scatter-project-starter/
+├── .ci/
+│   └── check_project.py
 ├── .github/
 │   └── workflows/
 │       └── project-check.yml
 ├── data/
 │   └── points.csv
 ├── resources/
-│   └── README_HINTS.md
+│   ├── README_HINTS.md
+│   └── VSCode_Git_Workflow.md
 └── README.md
 ```
 
@@ -109,16 +111,18 @@ src/
 
 Diese Projektstruktur erstellt ihr selbst.
 
-**Die Dateien unter `.github/` sollen nicht verändert werden.**
+**Die Dateien unter `.ci/` und `.github/` sollen nicht verändert werden.**
 
 ---
 
-# 4. Zielstruktur
+# Zielstruktur
 
 Am Ende soll euer Repository ungefähr so aussehen:
 
 ```text
 ascii-scatter-project/
+├── .ci/
+│   └── check_project.py
 ├── .github/
 │   └── workflows/
 │       └── project-check.yml
@@ -129,7 +133,8 @@ ascii-scatter-project/
 ├── data/
 │   └── points.csv
 ├── resources/
-│   └── README_HINTS.md
+│   ├── README_HINTS.md
+│   └── VSCode_Git_Workflow.md
 └── src/
     └── ascii_plotter/
         ├── __init__.py
@@ -138,9 +143,8 @@ ascii-scatter-project/
         └── cli.py
 ```
 
-Je nach installierter `uv`-Version koennen ausserdem automatisch Dateien wie
-`.python-version` und `src/ascii_plotter/py.typed` entstehen. Diese sind in Ordnung
-und muessen nicht entfernt werden.
+Je nach installierter `uv`-Version können außerdem automatisch Dateien wie
+`.python-version` und `src/ascii_plotter/py.typed` entstehen. Diese sind in Ordnung und müssen nicht entfernt werden.
 
 Optional später:
 
@@ -152,145 +156,240 @@ Das kommt allerdings erst in der nächsten Veranstaltung.
 
 ---
 
-# 5. Git-Regel für dieses Praktikum
+# Git-Regel für dieses Praktikum
 
 Ihr arbeitet **zu zweit an einem gemeinsamen Remote-Repository**.
 
 Beide Personen müssen:
 
-- das Repository selbst lokal klonen,
+- das Repository selbst lokal in VS Code klonen,
 - mindestens einen eigenen Branch erstellen,
 - eigene Python-Code-Commits erzeugen,
-- den Branch pushen,
-- mindestens einmal neue Änderungen vom Remote holen,
+- den eigenen Branch pushen,
+- mindestens einmal Änderungen vom Remote holen,
 - mindestens einen Pull Request erstellen oder reviewen.
 
-Am Ende müssen also im Git-Verlauf **Beiträge von beiden Personen** sichtbar sein.
+Am Ende müssen im Git-Verlauf **Beiträge von beiden Personen** sichtbar sein.
+
+> Ab dieser Veranstaltung verwenden wir für den normalen Git-Alltag primär die **Source-Control-Oberfläche von VS Code**. Die Git-Kommandos stehen weiterhin als Hinweise dabei, weil VS Code intern genau diese Git-Operationen ausführt und die Kommandozeile für Diagnose und Verständnis weiterhin wichtig ist.
 
 ---
 
-# 6. Ablaufplan
+# Ablaufplan
 
-| Phase | Aufgabe |
-|---:|---|
-| 1 | Repository gemeinsam einrichten und lokal klonen |
-| 2 | Projektstruktur + `uv` + `.gitignore` aufsetzen |
-| 3 | Parallel: CSV-Import und Plot-Rendering |
-| 4 | Pull Requests, Review, Merge, `git pull` |
-| 5 | Module verbinden und Programm ausführen |
-| 6 | CI grün bekommen + Repository kontrollieren |
+| Phase |      Aufgabe                                        |
+| ----: | --------------------------------------------------- |
+|     A | Repository klonen und in VS Code öffnen             |
+|     B | Projektstruktur + `uv` + `.gitignore` aufsetzen     |
+|     C | Schnittstellen festlegen und Arbeit aufteilen       |
+|     D | Parallel: CSV-Import und Plot-Rendering             |
+|     E | Pull Requests, Review und Integration               |
+|     F | CLI verbinden, CI grün bekommen, Abschlusskontrolle |
 
 ---
 
-# Phase A – Gemeinsames Repository vorbereiten
+# Phase A – Team-Repository in VS Code öffnen
 
-## 7. Beide Personen klonen das Repository
+## 1. Beide Personen klonen das Repository
 
 Beide Teammitglieder arbeiten auf ihrem **eigenen Rechner / in ihrem eigenen lokalen Clone**.
 
-```bash
-git clone <URL-DES-TEAM-REPOSITORIES>
-cd <repository>
-```
+### In VS Code
 
-Überprüfen:
+1. VS Code öffnen.
+2. `Ctrl+Shift+P` unter Windows/Linux bzw. `Cmd+Shift+P` unter macOS drücken.
+3. **Git: Clone** auswählen.
+4. Die URL eures gemeinsamen Team-Repositories einfügen.
+5. Einen lokalen Zielordner auswählen.
+6. Nach dem Clone **Open** / **Open Repository** wählen.
+7. Unten links kontrollieren, dass ihr auf Branch `main` seid.
+
+Öffnet anschließend das integrierte Terminal über:
+
+**Terminal → New Terminal**
+
+Ein sinnvoller Kontrollbefehl ist:
 
 ```bash
 git status
-git remote -v
 ```
 
-Beide Personen sollten dasselbe `origin` sehen.
+> **Terminal-Hinweis:** Das Klonen ginge auch mit `git clone <URL>`. Ab jetzt arbeiten wir aber primär über VS Code Source Control.
+
+### Optional: Python-Extension
+
+Falls ihr die Python-Extension für VS Code installiert habt, könnt ihr später den Interpreter eures `.venv` auswählen:
+
+1. `Ctrl/Cmd+Shift+P`
+2. **Python: Select Interpreter**
+3. Interpreter aus `.venv` auswählen
 
 ---
 
 # Phase B – Projektstruktur aufsetzen
 
-## 8. Setup-Branch
+## 2. Setup-Branch anlegen
 
-Eine Person übernimmt zunächst den Driver, die andere Person schaut mit und kontrolliert.
+**Person A** übernimmt zunächst den Setup-Branch. Person B schaut mit und kontrolliert die entstehenden Dateien.
 
-```bash
-git switch -c setup/python-project
+### In VS Code
+
+1. Unten links auf den aktuellen Branchnamen `main` klicken.
+2. **Create new branch...** auswählen.
+3. Branch nennen:
+
+```text
+setup/python-project
 ```
 
-Initialisiert im vorhandenen Repository ein `uv`-Projekt.
+Alternativ über die Command Palette:
 
-Empfehlung:
+**Git: Create Branch**
+
+> Terminal-Hinweis: `git switch -c setup/python-project`
+
+---
+
+## 3. uv-Projekt initialisieren
+
+Im integrierten VS-Code-Terminal:
 
 ```bash
 uv init --lib --name ascii-plotter
 ```
 
-Damit soll direkt ein Package unter
+Kontrolliert anschließend im Explorer links die neu erzeugte Struktur.
+
+Insbesondere sollte ein Package unter
 
 ```text
 src/ascii_plotter/
 ```
 
-entstehen. Kontrolliert die erzeugte Struktur und öffnet anschließend kurz `pyproject.toml`.
+entstanden sein.
 
-## 8.1 Environment erzeugen
+Öffnet gemeinsam `pyproject.toml` und schaut euch die wichtigsten Einträge an.
+
+---
+
+## 4. Environment erzeugen
+
+Im VS-Code-Terminal:
 
 ```bash
 uv venv
 ```
 
-## 8.2 Dependency hinzufügen
+Danach sollte im Projektordner entstehen:
+
+```text
+.venv/
+```
+
+Frage:
+
+> Ist `.venv` Quellcode? Sollte dieser Ordner wirklich über Git mit anderen geteilt werden?
+
+Falls ihr die Python-Extension nutzt, könnt ihr jetzt den Interpreter aus `.venv` auswählen.
+
+---
+
+## 5. Dependency hinzufügen
 
 ```bash
 uv add rich
 ```
 
-Prüft:
+Kontrolliert danach:
+
+- Was hat sich in `pyproject.toml` verändert?
+- Ist `uv.lock` entstanden?
+- Welche Dateien zeigt VS Code unter **Source Control → Changes** an?
+
+Prüft außerdem:
 
 ```bash
 uv run python -c "import rich; print('rich import works')"
 ```
 
-## 8.3 `.gitignore`
+---
+
+## 6. `.gitignore`
+
+Kontrolliert oder erstellt `.gitignore`.
 
 Mindestens:
 
 ```gitignore
 .venv/
 __pycache__/
-*.py[cod]
 .pytest_cache/
 .ruff_cache/
 .DS_Store
 ```
 
-Kontrolle:
+### Kontrolle in VS Code
 
-```bash
-git status
-```
+Öffnet links **Source Control** (`Ctrl/Cmd+Shift+G`).
 
-**Die `.venv/` darf nicht als untracked content erscheinen.**
+Unter **Changes** darf `.venv/` **nicht** auftauchen.
 
-Optional:
+Optional könnt ihr im Terminal zusätzlich kontrollieren:
 
 ```bash
 git check-ignore -v .venv/
 ```
 
-## 8.4 Setup committen
+Frage:
 
-```bash
-git add .
-git commit -m "Set up uv project structure"
-git push -u origin setup/python-project
+> Warum committen wir `uv.lock`, aber nicht `.venv/`?
+
+---
+
+## 7. Setup über VS Code committen und pushen
+
+Jetzt wird nicht primär über `git add` und `git commit` gearbeitet, sondern über VS Code.
+
+### Source Control
+
+1. Links **Source Control** öffnen (`Ctrl/Cmd+Shift+G`).
+2. Unter **Changes** jede Datei kurz ansehen.
+3. Eine Datei anklicken, um den Diff zu sehen.
+4. Prüfen: `.venv` darf nicht auftauchen.
+5. Mit dem `+` neben einer Datei die gewünschten Änderungen **stagen**.
+6. Alternativ `+` neben **Changes**, um alle sinnvollen Änderungen zu stagen.
+7. Oben Commit-Nachricht eingeben:
+
+```text
+Set up uv Python project
 ```
 
-Erstellt einen Pull Request.
+8. **Commit** klicken.
+9. Danach **Publish Branch** bzw. **Push** klicken.
 
-Die zweite Person reviewt kurz:
+> Terminal-Hinweis: Dies entspricht ungefähr `git add ...`, `git commit -m "Set up uv Python project"` und `git push -u origin setup/python-project`.
+
+---
+
+## 8. Setup-Pull-Request
+
+Auf GitHub im Browser:
+
+1. Repository öffnen.
+2. **Compare & pull request** auswählen.
+3. Kontrollieren:
+   - Base: `main`
+   - Compare: `setup/python-project`
+4. Pull Request erstellen.
+
+### Person B reviewt
+
+Person B prüft insbesondere:
 
 - existiert `.gitignore`?
 - ist `.venv/` ignoriert?
 - existiert `pyproject.toml`?
-- ist `rich` dort als Dependency vorhanden?
+- ist `rich` als Dependency vorhanden?
 - existiert `uv.lock`?
 - existiert `src/ascii_plotter/__init__.py`?
 
@@ -298,18 +397,26 @@ Danach Setup-PR mergen.
 
 ---
 
-# 9. Beide synchronisieren ihren lokalen Stand
+## 9. Beide lokalen Clones synchronisieren
 
-Jetzt **beide Personen**:
+Ein Merge auf GitHub verändert euren lokalen Clone **nicht automatisch**.
 
-```bash
-git switch main
-git pull
-```
+Deshalb jetzt bei **beiden Personen**:
+
+### In VS Code
+
+1. Unten links auf den Branchnamen klicken.
+2. `main` auswählen.
+3. Source Control öffnen.
+4. `...` → **Pull** auswählen.
+
+Je nach VS-Code-Version kann auch **Sync Changes** angeboten werden.
+
+> Terminal-Hinweis: `git switch main` und anschließend `git pull`.
 
 Das ist wichtig: Euer lokales Repository kennt den gemergten Setup-Code erst nach dem Pull.
 
-Optional prüfen:
+Optional zur Kontrolle:
 
 ```bash
 git log --oneline --graph --all
@@ -317,19 +424,62 @@ git log --oneline --graph --all
 
 ---
 
-# Phase C – Arbeit aufteilen
+# Phase C – Erst Schnittstellen festlegen
 
-Jetzt arbeitet ihr parallel.
+## 10. Bevor ihr parallel arbeitet
 
-## Person A: CSV-Import
+Bevor Person A und Person B unterschiedliche Branches öffnen, einigt ihr euch kurz auf die Funktionen, die später miteinander verbunden werden.
 
-Branch:
+### CSV-Seite
 
-```bash
-git switch -c feature/csv-loader
+```python
+def load_points(path):
+    ...
 ```
 
-Datei:
+Rückgabe zum Beispiel:
+
+```python
+[
+    ("A", 1.2, 7.8),
+    ("B", 2.7, 5.1),
+    ...
+]
+```
+
+### Plot-Seite
+
+```python
+def render_scatter(points, width=40, height=15):
+    ...
+```
+
+Damit kann Person B den Plot bereits mit selbst erzeugten Beispieldaten entwickeln, ohne darauf warten zu müssen, dass `io.py` fertig ist.
+
+> **Software-Engineering-Idee:** Eine vereinbarte Schnittstelle ermöglicht parallele Arbeit.
+
+---
+
+# Phase D – Parallele Arbeit
+
+# 11. Person A: CSV-Import
+
+## Eigenen Branch erstellen
+
+### In VS Code
+
+1. Prüfen, dass ihr auf aktuellem `main` seid.
+2. Unten links auf `main` klicken.
+3. **Create new branch...**
+4. Branch nennen:
+
+```text
+feature/csv-loader
+```
+
+> Terminal-Hinweis: `git switch -c feature/csv-loader`
+
+### Datei
 
 ```text
 src/ascii_plotter/io.py
@@ -354,7 +504,7 @@ Eine mögliche Struktur ist:
 ]
 ```
 
-### Hilfscode für CSV
+## Hilfscode für CSV
 
 Ihr dürft die Standardbibliothek `csv` verwenden:
 
@@ -385,25 +535,50 @@ Mindestens prüfen:
 - `value1` und `value2` werden zu Zahlen,
 - mehrere Zeilen werden eingelesen.
 
-Commit + Push:
+### Kurze lokale Kontrolle
+
+Ihr könnt vorübergehend im VS-Code-Terminal ausprobieren:
 
 ```bash
-git add src/ascii_plotter/io.py
-git commit -m "Add CSV point loader"
-git push -u origin feature/csv-loader
+uv run python -c "from ascii_plotter.io import load_points; print(load_points('data/points.csv')[:3])"
 ```
+
+## Commit + Push über VS Code
+
+1. Source Control öffnen.
+2. `io.py` anklicken und Diff ansehen.
+3. `io.py` stagen.
+4. Commit-Nachricht:
+
+```text
+Add CSV point loader
+```
+
+5. **Commit**.
+6. **Publish Branch** / **Push**.
+
+> Terminal-Hinweis: `git add src/ascii_plotter/io.py`, `git commit -m "Add CSV point loader"`, `git push -u origin feature/csv-loader`.
 
 ---
 
-# Person B: ASCII Plot
+# 12. Person B: ASCII Scatter Plot
 
-Branch:
+## Eigenen Branch erstellen
 
-```bash
-git switch -c feature/ascii-plot
+### In VS Code
+
+1. Prüfen, dass ihr auf aktuellem `main` seid.
+2. Unten links auf `main` klicken.
+3. **Create new branch...**
+4. Branch nennen:
+
+```text
+feature/ascii-plot
 ```
 
-Datei:
+> Terminal-Hinweis: `git switch -c feature/ascii-plot`
+
+### Datei
 
 ```text
 src/ascii_plotter/plot.py
@@ -418,7 +593,22 @@ def render_scatter(points, width=40, height=15):
 
 Ihr müsst **nicht** alles selbst erfinden.
 
-## 10. Koordinaten auf Terminalgröße skalieren
+Zum Entwickeln könnt ihr zunächst feste Beispieldaten benutzen:
+
+```python
+points = [
+    ("A", 1.2, 7.8),
+    ("B", 2.7, 5.1),
+    ("C", 4.8, 8.4),
+    ("D", 8.2, 2.0),
+]
+```
+
+Damit seid ihr unabhängig vom CSV-Loader von Person A.
+
+---
+
+# 13. Koordinaten auf Terminalgröße skalieren
 
 Hilfsfunktion:
 
@@ -447,7 +637,7 @@ Achtung: Terminalzeilen laufen von **oben nach unten**. Für einen klassischen P
 
 ---
 
-# 11. Grid erzeugen
+# 14. Grid erzeugen
 
 Eine einfache Darstellung:
 
@@ -469,9 +659,11 @@ row = height - 1 - y_pos
 grid[row][x_pos] = point_type
 ```
 
+Falls zwei Punkte zufällig auf dieselbe Terminalposition fallen, dürft ihr z. B. `*` verwenden.
+
 ---
 
-# 12. Farben mit Rich
+# 15. Farben mit Rich
 
 Ihr könnt beispielsweise verwenden:
 
@@ -506,28 +698,48 @@ console.print(line)
 
 Rich kann Strings und `Text`-Objekte farbig im Terminal ausgeben.
 
-Commit + Push:
+## Commit + Push über VS Code
 
-```bash
-git add src/ascii_plotter/plot.py
-git commit -m "Add terminal scatter renderer"
-git push -u origin feature/ascii-plot
+1. Source Control öffnen.
+2. `plot.py` anklicken und Diff ansehen.
+3. Datei stagen.
+4. Commit-Nachricht:
+
+```text
+Add terminal scatter renderer
 ```
+
+5. **Commit**.
+6. **Publish Branch** / **Push**.
+
+> Terminal-Hinweis: `git add src/ascii_plotter/plot.py`, `git commit -m "Add terminal scatter renderer"`, `git push -u origin feature/ascii-plot`.
 
 ---
 
-# Phase D – Pull Requests und Integration
+# Phase E – Pull Requests und Integration
 
-## 13. Beide erstellen einen Pull Request
+## 16. Beide erstellen einen Pull Request
 
-Es sollten jetzt mindestens existieren:
+Auf GitHub sollten jetzt mindestens existieren:
 
 ```text
 PR 1: feature/csv-loader
 PR 2: feature/ascii-plot
 ```
 
-Reviewt gegenseitig den PR der anderen Person.
+Jede Person:
+
+1. eigenen Branch pushen,
+2. GitHub im Browser öffnen,
+3. **Compare & pull request**,
+4. Zielbranch `main` kontrollieren,
+5. PR erstellen.
+
+---
+
+## 17. Gegenseitiges Review
+
+Reviewt den PR der jeweils anderen Person.
 
 Kurze Review-Fragen:
 
@@ -536,65 +748,82 @@ Kurze Review-Fragen:
 - Gibt es offensichtliche unnötige Duplikation?
 - Importiert das Modul nur Dinge, die es wirklich benötigt?
 - Ist der Code ohne großen Kontext nachvollziehbar?
+- Entspricht die Funktion der vereinbarten Schnittstelle?
 
 Merge zunächst **einen** der beiden PRs.
 
 ---
 
-# 14. Nach einem Merge: lokalen Stand aktualisieren
+## 18. Nach einem Merge: lokalen Stand aktualisieren
 
-Die andere Person sollte jetzt erleben, dass auf GitHub Änderungen existieren, die im eigenen Clone noch fehlen.
+Jetzt existiert auf GitHub Code, den die andere Person lokal noch nicht hat.
 
-```bash
-git switch main
-git pull
-```
+### In VS Code
 
-Zurück zum eigenen Branch:
+1. Auf `main` wechseln.
+2. Source Control → `...` → **Pull**.
+3. Kontrollieren, dass die Datei des Partners / der Partnerin jetzt im Explorer sichtbar ist.
 
-```bash
-git switch feature/ascii-plot
-```
+> Terminal-Hinweis: `git switch main` + `git pull`.
 
-bzw.:
+### Eigenen Feature-Branch aktualisieren
 
-```bash
-git switch feature/csv-loader
-```
+Falls euer eigener PR noch offen ist:
 
-Den aktuellen `main` integrieren:
+1. wieder auf den eigenen Feature-Branch wechseln,
+2. `Ctrl/Cmd+Shift+P`,
+3. **Git: Merge Branch...** auswählen,
+4. `main` auswählen,
+5. eventuelle Konflikte in VS Code lösen,
+6. falls nötig Merge-Commit erstellen,
+7. **Push** / **Sync Changes**.
 
-```bash
-git merge main
-```
+> Terminal-Hinweis: Auf dem Feature-Branch wäre die entsprechende Operation `git merge main`.
 
-Danach:
+Damit wird euer offener Pull Request aktualisiert.
 
-```bash
-git push
-```
-
-Damit wird der Pull Request aktualisiert.
-
-Jetzt zweiten PR mergen.
+Danach zweiten PR mergen.
 
 ---
 
-# Phase E – Module miteinander verbinden
+# Phase F – Module miteinander verbinden
 
-## 15. `cli.py`
+## 19. Nach beiden Merges synchronisieren
 
-Nach beiden Merges:
+Bei beiden Personen:
 
-```bash
-git switch main
-git pull
+1. auf `main` wechseln,
+2. **Pull**.
+
+Jetzt sollten sowohl
+
+```text
+io.py
 ```
 
-Erstellt einen letzten kleinen Integrationsbranch:
+als auch
 
-```bash
-git switch -c feature/cli
+```text
+plot.py
+```
+
+lokal vorhanden sein.
+
+---
+
+## 20. Integrationsbranch `feature/cli`
+
+Eine Person übernimmt den kleinen Integrationsbranch. Sinnvoll ist hier die Person, die bisher weniger Integrationsarbeit hatte.
+
+### In VS Code
+
+1. auf aktuellem `main` sein,
+2. Branch-Menü unten links,
+3. **Create new branch...**,
+4. Name:
+
+```text
+feature/cli
 ```
 
 Datei:
@@ -643,9 +872,9 @@ Das sind **relative Imports innerhalb eures Packages**.
 
 ---
 
-# 16. Programm ausführen
+# 21. Programm ausführen
 
-Vom Repository-Root:
+Vom Repository-Root im VS-Code-Terminal:
 
 ```bash
 uv run python -m ascii_plotter.cli data/points.csv
@@ -657,27 +886,60 @@ Nicht bevorzugt:
 python src/ascii_plotter/cli.py
 ```
 
+Warum?
+
 Bei relativen Imports verliert Python bei direkter Dateiausführung leicht den Package-Kontext.
 
+Das `-m` bedeutet vereinfacht:
+
+> Starte dieses Modul **als Teil des Packages**.
+
 ---
 
-# 17. Commit und letzter PR
+# 22. CLI committen und PR erstellen
 
-Die Person, die den Integrationsbranch erstellt, committed `cli.py`.
+### In VS Code
 
-Die andere Person reviewt den PR.
+1. Source Control öffnen.
+2. Diff von `cli.py` ansehen.
+3. Datei stagen.
+4. Commit-Nachricht:
 
-```bash
-git add src/ascii_plotter/cli.py
-git commit -m "Connect loader and scatter plot CLI"
-git push -u origin feature/cli
+```text
+Connect loader and scatter plot CLI
 ```
 
-Danach PR → Review → Merge.
+5. **Commit**.
+6. **Publish Branch** / **Push**.
+
+Danach auf GitHub:
+
+1. Pull Request erstellen,
+2. andere Person reviewt,
+3. PR mergen.
+
+> Terminal-Hinweis: Entspricht `git add ...`, `git commit ...`, `git push -u origin feature/cli`.
 
 ---
 
-# 18. CI kontrollieren
+# 23. Finalen Stand lokal holen
+
+Nach dem letzten Merge bei **beiden Personen**:
+
+1. auf `main` wechseln,
+2. **Pull**.
+
+Dann lokal ausführen:
+
+```bash
+uv run python -m ascii_plotter.cli data/points.csv
+```
+
+Beide lokalen Clones sollten jetzt denselben Programmstand besitzen.
+
+---
+
+# 24. CI kontrollieren
 
 Auf GitHub sollte die bereitgestellte Action automatisch laufen.
 
@@ -699,24 +961,57 @@ Sie gibt Feedback zu Punkten wie:
 
 Wenn etwas rot ist:
 
-1. Fehlermeldung lesen.
-2. Lokal korrigieren.
-3. Commit erstellen.
-4. Pushen.
-5. CI erneut beobachten.
+1. Fehlermeldung auf GitHub lesen.
+2. Lokal in VS Code korrigieren.
+3. Source Control öffnen und Diff ansehen.
+4. Änderung stagen.
+5. Commit erstellen.
+6. Pushen.
+7. CI erneut beobachten.
 
 Ihr müsst die Workflow-Datei **nicht** verändern.
 
 ---
 
-# 19. Definition of Done
+# Was tun bei einem Merge Conflict?
+
+Falls ihr beide dieselbe Datei verändert habt, kann VS Code einen Merge Conflict anzeigen.
+
+Dann:
+
+1. Source Control öffnen.
+2. Unter **Merge Changes** die Konfliktdatei auswählen.
+3. Den Merge Editor verwenden.
+4. Bewusst entscheiden, welche Änderungen erhalten bleiben sollen.
+5. Datei speichern.
+6. Datei stagen.
+7. Merge-Commit abschließen.
+
+Mögliche Optionen heißen je nach VS-Code-Version zum Beispiel:
+
+- **Accept Current**
+- **Accept Incoming**
+- **Accept Both**
+
+Nicht einfach blind auf **Accept Both** klicken.
+
+Kontrolliert im Zweifel zusätzlich:
+
+```bash
+git status
+```
+
+---
+
+# Definition of Done
 
 Euer Praktikum ist abgeschlossen, wenn:
 
-- [ ] beide Teammitglieder lokal am Projekt gearbeitet haben,
+- [ ] beide Teammitglieder das Repository selbst lokal in VS Code geklont haben,
 - [ ] beide Teammitglieder eigene Python-Code-Commits haben,
-- [ ] Branches und Pull Requests verwendet wurden,
-- [ ] mindestens einmal `git pull` benutzt wurde, um Änderungen des Partners zu holen,
+- [ ] beide mindestens einen eigenen Branch verwendet haben,
+- [ ] Pull Requests und Reviews verwendet wurden,
+- [ ] mindestens einmal Änderungen über **Pull** / **Sync** vom Remote geholt wurden,
 - [ ] `.venv/` lokal existieren darf, aber nicht von Git getrackt wird,
 - [ ] `pyproject.toml` vorhanden ist,
 - [ ] `rich` als Dependency eingetragen ist,
@@ -725,11 +1020,12 @@ Euer Praktikum ist abgeschlossen, wenn:
 - [ ] `io.py`, `plot.py` und `cli.py` existieren,
 - [ ] relative Imports zwischen den Modulen verwendet werden,
 - [ ] `uv run python -m ascii_plotter.cli data/points.csv` funktioniert,
+- [ ] beide lokalen Clones nach einem finalen Pull auf demselben Stand sind,
 - [ ] die GitHub-CI grün ist.
 
 ---
 
-# 20. Wenn ihr früher fertig seid
+# Wenn ihr früher fertig seid
 
 ## Bonus A – schönere Legende
 
@@ -746,7 +1042,11 @@ D = yellow
 
 Ergänzt einfache x-/y-Achsen oder Min-/Max-Werte.
 
-## Bonus C – CLI Entry Point
+## Bonus C – Kollisionen
+
+Falls zwei Punkte auf derselben Terminalzelle landen, zeigt statt eines Typs z. B. `*` an.
+
+## Bonus D – CLI Entry Point
 
 Recherchiert `[project.scripts]` in `pyproject.toml` und richtet ein Kommando ein, sodass anschließend z. B. funktioniert:
 
@@ -754,13 +1054,13 @@ Recherchiert `[project.scripts]` in `pyproject.toml` und richtet ein Kommando ei
 uv run ascii-scatter data/points.csv
 ```
 
-## Bonus D – mehrere Datensätze
+## Bonus E – mehrere Datensätze
 
 Legt eine zweite CSV-Datei an und prüft, ob euer Programm ohne Codeänderung damit funktioniert.
 
 ---
 
-# 21. Abschlussfragen
+# Abschlussfragen
 
 Besprecht kurz im Zweierteam:
 
@@ -770,5 +1070,39 @@ Besprecht kurz im Zweierteam:
 4. Wozu dient `__init__.py`?
 5. Warum teilen wir `io.py`, `plot.py` und `cli.py` auf?
 6. Was bedeutet der Punkt in `from .io import load_points`?
-7. Was musste passieren, damit der Code eures Partners auf eurem Rechner auftauchte?
+7. Warum starten wir das Programm mit `python -m ascii_plotter.cli`?
+8. Was musste passieren, damit der Code eures Partners auf eurem Rechner auftauchte?
+9. Was passiert technisch, wenn ihr in VS Code auf **Commit**, **Push** oder **Pull** klickt?
+10. Warum sollte man auch bei einer GUI weiterhin ungefähr wissen, welche Git-Operation gerade durchgeführt wird?
 
+---
+
+# VS-Code-Git-Kurzroutine
+
+Für dieses und die kommenden Praktika könnt ihr euch diese Routine merken:
+
+```text
+Branch erstellen
+    ↓
+Dateien bearbeiten
+    ↓
+Diff in Source Control ansehen
+    ↓
+Stage
+    ↓
+Commit
+    ↓
+Push / Publish Branch
+    ↓
+Pull Request + Review
+    ↓
+Merge auf GitHub
+    ↓
+main lokal aktualisieren (Pull)
+```
+
+Eine kompakte VS-Code-Git-Anleitung findet ihr zusätzlich unter:
+
+```text
+resources/VSCode_Git_Workflow.md
+```
