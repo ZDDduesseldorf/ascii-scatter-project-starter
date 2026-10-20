@@ -194,13 +194,15 @@ Am Ende müssen im Git-Verlauf **Beiträge von beiden Personen** sichtbar sein.
 
 Ihr arbeitet zu zweit, benötigt aber ein gemeinsames Remote-Repository, auf das beide schreiben können.
 
-Person A
+**Person A**  
 1. Öffnet das bereitgestellte Starter-Repository auf GitHub.
 2. Klickt auf Fork und erstellt einen Fork im eigenen GitHub-Account.
 3. Öffnet im neuen Fork Settings → Collaborators → Add people.
-4. Fügt Person B über den GitHub-Benutzernamen als Collaborator hinzu.
-Person B
+4. Fügt **Person B** über den GitHub-Benutzernamen als Collaborator hinzu.
+
+**Person B**  
 5. Akzeptiert die GitHub-Einladung.
+
 Danach verwenden beide Personen den Fork von Person A als gemeinsames Team-Repository.
 
 Beide öffnen in VS Code:
