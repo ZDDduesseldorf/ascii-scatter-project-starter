@@ -58,12 +58,8 @@ def render_scatter(points, width=40, height=15):
                 line.append(symbol)
 
         line.append("\n")
-    line.append("0 +" + round(max_y) * "-" * 5)
+    line.append("0 +" + round(max_y) * "-" * 4)
     line.append("\n")
     line.append("   0\n")
     line.append("Legend: A B C D")
     console.print(line, )
-
-
-if __name__ == "__main__":
-    render_scatter(points, 10, 10)

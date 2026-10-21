@@ -1,2 +1,1 @@
-def hello() -> str:
-    return "Hello from ascii-plotter!"
+from ascii_plotter import*
